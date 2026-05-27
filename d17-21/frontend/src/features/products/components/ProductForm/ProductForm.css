@@ -1,0 +1,102 @@
+.form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 20px;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.form-modal {
+  background: #FFFFFF;
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 480px;
+  padding: 28px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-title {
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--color-text-main);
+  letter-spacing: -0.01em;
+}
+
+.modal-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-input, .form-select, .form-textarea {
+  background: #F8FAFF;
+  border: 1px solid #E0E7FF;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.875rem;
+  color: var(--color-text-main);
+  outline: none;
+  width: 100%;
+  transition: var(--transition-smooth);
+}
+
+.form-textarea {
+  resize: vertical;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 15px rgba(79, 70, 229, 0.15);
+  background: #FFFFFF;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.form-btn {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-glass);
+  border-radius: 10px;
+  color: var(--color-text-main);
+  padding: 10px 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.form-btn:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.form-btn-submit {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #4F46E5 100%);
+  border: none;
+  color: #FFFFFF;
+}
+
+.form-btn-submit:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--color-primary-hover) 0%, #4338CA 100%);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-1px);
+}
+
+.form-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

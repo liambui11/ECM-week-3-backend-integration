@@ -1,0 +1,58 @@
+.error-boundary-card {
+  background: rgba(239, 68, 68, 0.05);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px dashed rgba(239, 68, 68, 0.25);
+  border-radius: 16px;
+  padding: 30px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-family: var(--font-body);
+  max-width: 400px;
+  margin: 20px auto;
+  box-shadow: var(--shadow-card);
+}
+
+.error-icon {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #DC2626;
+  margin-bottom: 4px;
+}
+
+.error-title {
+  font-family: var(--font-title);
+  font-size: 1.125rem;
+  color: #FCA5A5;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.error-msg {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.error-reset {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #FCA5A5;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: var(--transition-smooth);
+}
+
+.error-reset:hover {
+  background: rgba(239, 68, 68, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}

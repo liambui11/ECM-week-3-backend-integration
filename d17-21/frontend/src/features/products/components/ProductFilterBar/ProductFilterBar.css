@@ -1,0 +1,103 @@
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: #FFFFFF;
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 24px;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filt-sort-grp {
+  margin-left: auto;
+}
+
+.filt-input {
+  background: #F8FAFF;
+  border: 1px solid #E0E7FF;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.825rem;
+  color: var(--color-text-main);
+  outline: none;
+  transition: var(--transition-smooth);
+}
+
+.filt-search {
+  width: 220px;
+}
+
+.filt-price {
+  width: 80px;
+}
+
+.filt-select {
+  background: #F8FAFF;
+  border: 1px solid #E0E7FF;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.825rem;
+  color: var(--color-text-main);
+  outline: none;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.filt-input:focus, .filt-select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 10px rgba(79, 70, 229, 0.1);
+  background: #FFFFFF;
+}
+
+.filt-btn {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-glass);
+  border-radius: 8px;
+  color: var(--color-text-main);
+  padding: 8px 14px;
+  font-size: 0.825rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.filt-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.filt-btn-primary {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #4F46E5 100%);
+  border: none;
+  color: #FFFFFF;
+}
+
+.filt-btn-primary:hover {
+  background: linear-gradient(135deg, var(--color-primary-hover) 0%, #4338CA 100%);
+  box-shadow: var(--shadow-glow);
+}
+
+@media (max-width: 900px) {
+  .filt-sort-grp {
+    margin-left: 0;
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .filter-group {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .filt-search {
+    flex-grow: 1;
+  }
+}
