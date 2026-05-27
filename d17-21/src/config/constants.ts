@@ -20,3 +20,8 @@ export const SORTING = {
   DEFAULT_ORDER: 'asc',
   ALLOWED_FIELDS: ['id', 'name', 'price', 'createdAt'],
 } as const;
+
+export const IDEMPOTENCY_CONFIG = {
+  ttl: parseInt(process.env.IDEMPOTENCY_TTL ?? '86400', 10),
+  secret: process.env.IDEMPOTENCY_SECRET ?? '',
+} as const;

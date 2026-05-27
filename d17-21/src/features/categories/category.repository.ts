@@ -1,9 +1,17 @@
-import { IRepository } from '../../core/interfaces/IRepository';
+import { IRepository } from '../../core/interfaces/repository.interface';
 import { prisma } from '../../core/database/prisma';
 import { Category } from './category.entity';
-import { CreateCategoryDto, UpdateCategoryDto, CategoryResponseDto } from './category.dto';
+import {
+  CreateCategoryDto,
+  UpdateCategoryDto,
+  CategoryResponseDto,
+} from './category.dto';
 
-export class CategoryRepository implements IRepository<Category, CreateCategoryDto, UpdateCategoryDto> {
+export class CategoryRepository implements IRepository<
+  Category,
+  CreateCategoryDto,
+  UpdateCategoryDto
+> {
   async findById(id: number): Promise<CategoryResponseDto | null> {
     return prisma.category.findUnique({
       where: { id },

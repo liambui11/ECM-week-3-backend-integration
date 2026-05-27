@@ -1,11 +1,19 @@
-import { IRepository } from '../../core/interfaces/IRepository';
+import { IRepository } from '../../core/interfaces/repository.interface';
 import { prisma } from '../../core/database/prisma';
 import { Product } from './product.entity';
-import { CreateProductDto, UpdateProductDto, GetProductsQueryDto, ProductResponseDto } from './product.dto';
+import {
+  CreateProductDto,
+  UpdateProductDto,
+  GetProductsQueryDto,
+  ProductResponseDto,
+} from './product.dto';
 import { Prisma } from '@prisma/client';
 
-export class ProductRepository implements IRepository<Product, CreateProductDto, UpdateProductDto> {
-  
+export class ProductRepository implements IRepository<
+  Product,
+  CreateProductDto,
+  UpdateProductDto
+> {
   private buildWhereClause(q: GetProductsQueryDto): Prisma.ProductWhereInput {
     const where: Prisma.ProductWhereInput = {};
     if (q.categoryId) {
@@ -30,10 +38,12 @@ export class ProductRepository implements IRepository<Product, CreateProductDto,
     });
   }
 
-  async findAll(q: GetProductsQueryDto): Promise<{ items: ProductResponseDto[]; total: number }> {
+  async findAll(
+    q: GetProductsQueryDto
+  ): Promise<{ items: ProductResponseDto[]; total: number }> {
     const where = this.buildWhereClause(q);
     const skip = (q.page - 1) * q.limit;
-    
+
     const [products, total] = await Promise.all([
       prisma.product.findMany({
         where,

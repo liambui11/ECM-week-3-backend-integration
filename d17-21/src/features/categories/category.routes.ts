@@ -8,6 +8,7 @@ import {
   createCategorySchema,
   updateCategorySchema,
 } from './category.validator';
+import { idempotency } from '../../core/idempotency/idempotency.instance';
 
 const repository = new CategoryRepository();
 const service = new CategoryService(repository);
@@ -17,7 +18,12 @@ const router = Router();
 
 router.get('/', controller.getAll);
 router.get('/:id', validate(categoryIdParamSchema), controller.getById);
-router.post('/', validate(createCategorySchema), controller.create);
+router.post(
+  '/',
+  idempotency,
+  validate(createCategorySchema),
+  controller.create
+);
 router.put(
   '/:id',
   validate(categoryIdParamSchema),

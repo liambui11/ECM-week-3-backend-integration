@@ -1,5 +1,3 @@
-// Central router registry combining feature-based routes (Rule #2).
-
 import { Router } from 'express';
 import { productRouter } from '../features/products';
 import { categoryRouter } from '../features/categories';
