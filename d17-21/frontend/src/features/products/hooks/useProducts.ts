@@ -1,5 +1,3 @@
-// Custom hook managing state, pagination, sorting, search filters, and optimistic updates (Rule #1, Rule #2).
-
 import { useState, useEffect, useCallback } from 'react';
 import { Product, Pagination, ProductQueryParams, CreateProductInput, UpdateProductInput } from '../../../shared/types';
 import { api } from '../../../shared/services/api';

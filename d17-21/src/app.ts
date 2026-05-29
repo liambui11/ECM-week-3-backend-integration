@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import router from './routes';
 import { errorHandler } from './core/middlewares/errorHandler';
 import { corsMiddleware } from './core/middlewares/cors.middleware';
@@ -8,6 +9,7 @@ const app = express();
 
 app.use(corsMiddleware);
 app.use(express.json());
+app.use(cookieParser());
 
 app.use('/api', router);
 

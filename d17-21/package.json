@@ -11,19 +11,27 @@
     "install-all": "npm install && npm --prefix frontend install"
   },
   "dependencies": {
-    "@prisma/client": "^5.0.0",
+    "@prisma/client": "^5.22.0",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.0",
+    "dotenv": "^16.6.1",
     "express": "^4.18.0",
+    "jsonwebtoken": "^9.0.3",
     "node-cache": "^5.1.2",
+    "pg": "^8.21.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^18.0.0",
     "@types/node-cache": "^4.2.5",
-    "prisma": "^5.0.0",
+    "@types/pg": "^8.20.0",
+    "prisma": "^5.22.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.0.0"
   }

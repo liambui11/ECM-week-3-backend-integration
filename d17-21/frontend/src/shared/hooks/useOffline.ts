@@ -1,5 +1,3 @@
-// React hook to monitor navigator online/offline state changes (Rule #2).
-
 import { useState, useEffect } from 'react';
 
 export const useOffline = (): boolean => {

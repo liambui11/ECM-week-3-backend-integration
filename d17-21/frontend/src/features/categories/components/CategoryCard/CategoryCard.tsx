@@ -1,5 +1,3 @@
-// CategoryCard component to display category details (Rule #2).
-
 import React from 'react';
 import { Category } from '../../../../shared/types';
 import './CategoryCard.css';

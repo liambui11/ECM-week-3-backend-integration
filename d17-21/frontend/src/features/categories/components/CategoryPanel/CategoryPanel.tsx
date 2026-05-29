@@ -1,5 +1,3 @@
-// CategoryPanel manages the UI for creating and displaying inventory categories (Rule #2, Rule #7).
-
 import React, { useState } from 'react';
 import { Category } from '../../../../shared/types';
 import CategoryCard from '../CategoryCard/CategoryCard';

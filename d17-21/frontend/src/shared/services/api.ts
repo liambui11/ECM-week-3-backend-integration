@@ -30,7 +30,6 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
 }
 
 export const api = {
-  // Category API endpoints
   getCategories: (): Promise<Category[]> => {
     return request<Category[]>('/categories');
   },
@@ -55,7 +54,6 @@ export const api = {
     });
   },
 
-  // Product API endpoints
   getProducts: (q: ProductQueryParams): Promise<{ products: Product[]; pagination: Pagination }> => {
     const params = new URLSearchParams();
     Object.entries(q).forEach(([key, val]) => {

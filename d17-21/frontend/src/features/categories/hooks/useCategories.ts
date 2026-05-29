@@ -1,5 +1,3 @@
-// Custom React hook managing state, loaders, and operations for product categories (Rule #2).
-
 import { useState, useEffect, useCallback } from 'react';
 import { Category } from '../../../shared/types';
 import { api } from '../../../shared/services/api';

@@ -1,7 +1,7 @@
 // Global Express Error Handler Middleware (Rule #6: Error boundaries / handlers).
 
 import { Request, Response, NextFunction } from 'express';
-import { errorResponse } from '../utils/response';
+import { errorResponse, AppError } from '../utils/response';
 import { HTTP_STATUS } from '../../config/constants';
 
 export const errorHandler = (
@@ -12,10 +12,12 @@ export const errorHandler = (
 ): Response => {
   console.error(`[Error]: ${err.message}`);
 
+  const statusCode = err instanceof AppError ? err.statusCode : HTTP_STATUS.INTERNAL_SERVER_ERROR;
+
   return errorResponse(
     res,
     err.message || 'Internal Server Error',
-    HTTP_STATUS.INTERNAL_SERVER_ERROR,
+    statusCode,
     process.env.NODE_ENV === 'development' ? err.stack : undefined
   );
 };

@@ -1,5 +1,3 @@
-// Category Request Validation Zod Schemas.
-
 import { z } from 'zod';
 
 export const categoryIdParamSchema = z.object({

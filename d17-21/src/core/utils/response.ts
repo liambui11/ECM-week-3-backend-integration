@@ -3,6 +3,16 @@
 import { Response } from 'express';
 import { HTTP_STATUS } from '../../config/constants';
 
+export class AppError extends Error {
+  constructor(
+    public statusCode: number,
+    message: string
+  ) {
+    super(message);
+    this.name = 'AppError';
+  }
+}
+
 interface ApiResponse<T> {
   status: 'success' | 'error';
   message: string;

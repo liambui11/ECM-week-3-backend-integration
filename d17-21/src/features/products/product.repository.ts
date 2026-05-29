@@ -1,5 +1,5 @@
 import { IRepository } from '../../core/interfaces/repository.interface';
-import { prisma } from '../../core/database/prisma';
+import  prisma from '../../core/database/prisma';
 import { Product } from './product.entity';
 import {
   CreateProductDto,
