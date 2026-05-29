@@ -1,6 +1,6 @@
+// LoginForm renders a responsive, highly polished user credentials card with a seamless login/register mode toggle (Rule #1, Rule #2, Rule #9).
 import React from 'react';
-import { useLoginForm } from '../../hooks/useLoginForm';
-import { IAuthService } from '../../services/AuthService';
+import { useLoginForm, IAuthService } from '../../hooks/useLoginForm';
 import { User } from '../../types';
 import './LoginForm.css';
 
@@ -15,18 +15,30 @@ interface LoginInputProps {
   hasError: boolean;
 }
 
-export const LoginHeader: React.FC = () => (
+export const LoginHeader: React.FC<{ isRegister: boolean }> = ({ isRegister }) => (
   <div className="login-header">
-    <h2 className="login-title">Sign In</h2>
-    <p className="login-subtitle">Access your E+CRAFTMAN manager panel</p>
+    <h1 className="brand-logo-title">E+CRAFTMAN</h1>
+    <h2 className="login-title">{isRegister ? 'Create Account' : 'Sign In'}</h2>
+    <p className="login-subtitle">
+      {isRegister ? 'Register your E+CRAFTMAN admin credentials' : 'Access your manager panel'}
+    </p>
   </div>
 );
 
 export const LoginInput: React.FC<LoginInputProps> = ({
-  id, label, type, placeholder, value, onChange, disabled, hasError
+  id,
+  label,
+  type,
+  placeholder,
+  value,
+  onChange,
+  disabled,
+  hasError,
 }) => (
   <div className="form-group">
-    <label className="form-label" htmlFor={id}>{label}</label>
+    <label className="form-label" htmlFor={id}>
+      {label}
+    </label>
     <input
       id={id}
       type={type}
@@ -40,14 +52,6 @@ export const LoginInput: React.FC<LoginInputProps> = ({
   </div>
 );
 
-export const LoginFooter: React.FC = () => (
-  <div className="login-footer">
-    <p className="demo-credentials-title">Demo Credentials</p>
-    <p className="demo-credential">Email: <code>admin@ecraftman.com</code></p>
-    <p className="demo-credential">Password: <code>Password123</code></p>
-  </div>
-);
-
 interface LoginFormProps {
   authService: IAuthService;
   onSuccess: (user: User) => void;
@@ -55,17 +59,30 @@ interface LoginFormProps {
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({
-  authService, onSuccess, onToast
+  authService,
+  onSuccess,
+  onToast,
 }) => {
   const {
-    email, setEmail, password, setPassword, loading, error, handleLogin
+    email,
+    setEmail,
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
+    isRegister,
+    toggleMode,
+    loading,
+    error,
+    handleAuth,
   } = useLoginForm({ authService, onSuccess, onToast });
 
   return (
     <div className="login-card-container">
       <div className="login-card">
-        <LoginHeader />
-        <form onSubmit={handleLogin} className="login-form">
+        <LoginHeader isRegister={isRegister} />
+        
+        <form onSubmit={handleAuth} className="login-form">
           <LoginInput
             id="email-input"
             label="Email Address"
@@ -76,6 +93,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             disabled={loading}
             hasError={!!error && !email.includes('@')}
           />
+          
           <LoginInput
             id="password-input"
             label="Password"
@@ -86,13 +104,39 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             disabled={loading}
             hasError={!!error && password.length < 6}
           />
-          {error && <div className="form-error-banner" role="alert">{error}</div>}
+
+          {isRegister && (
+            <LoginInput
+              id="confirm-password-input"
+              label="Confirm Password"
+              type="password"
+              placeholder="••••••••"
+              value={confirmPassword}
+              onChange={setConfirmPassword}
+              disabled={loading}
+              hasError={!!error && password !== confirmPassword}
+            />
+          )}
+
+          {error && (
+            <div className="form-error-banner" role="alert">
+              {error}
+            </div>
+          )}
+          
           <button type="submit" className="login-submit-btn" disabled={loading}>
-            {loading ? <span className="spinner"></span> : 'Sign In to Panel'}
+            {loading ? <span className="spinner"></span> : isRegister ? 'Create Account' : 'Sign In to Panel'}
           </button>
         </form>
-        <LoginFooter />
+
+        <div className="login-toggle-container">
+          <button className="login-toggle-btn" onClick={toggleMode} disabled={loading}>
+            {isRegister ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
+          </button>
+        </div>
       </div>
     </div>
   );
 };
+
+export default LoginForm;

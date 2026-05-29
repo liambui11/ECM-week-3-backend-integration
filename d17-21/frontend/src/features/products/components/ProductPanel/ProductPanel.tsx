@@ -1,5 +1,3 @@
-// ProductPanel coordinates filters, grids, pagination, and forms for inventory items (Rule #1, Rule #2).
-
 import React, { useState } from 'react';
 import { Product, Category, CreateProductInput, ProductQueryParams } from '../../../../shared/types';
 import { INVENTORY_LIMITS } from '../../../../shared/constants';

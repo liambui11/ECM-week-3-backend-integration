@@ -12,7 +12,7 @@ export const corsOptions: CorsOptions = {
       callback(new Error('Bị block bởi policy CORS!'));
     }
   },
-  allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key', 'x-idempotency-key'],
   exposedHeaders: ['x-rate-limit-remaining', 'x-new-token'],
   credentials: true
 };

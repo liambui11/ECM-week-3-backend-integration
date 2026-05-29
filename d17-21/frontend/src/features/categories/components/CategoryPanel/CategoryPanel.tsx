@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Category } from '../../../../shared/types';
 import CategoryCard from '../CategoryCard/CategoryCard';
 import './CategoryPanel.css';
@@ -18,6 +19,9 @@ export const CategoryPanel: React.FC<CategoryPanelProps> = ({
 }) => {
   const [name, setName] = useState<string>('');
   const [desc, setDesc] = useState<string>('');
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const activeCategoryId = searchParams.get('categoryId') ? Number(searchParams.get('categoryId')) : null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,6 +45,17 @@ export const CategoryPanel: React.FC<CategoryPanelProps> = ({
     }
   };
 
+  const handleSelectCategory = (id: number) => {
+    const params = new URLSearchParams(searchParams);
+    if (activeCategoryId === id) {
+      params.delete('categoryId');
+    } else {
+      params.set('categoryId', String(id));
+    }
+    params.set('page', '1');
+    setSearchParams(params);
+  };
+
   if (loading) return <div className="cat-panel-loader">Loading categories...</div>;
   if (error) return <div className="cat-panel-error">Failed: {error}</div>;
 
@@ -61,7 +76,14 @@ export const CategoryPanel: React.FC<CategoryPanelProps> = ({
           <p className="cat-empty-msg">No categories created yet.</p>
         ) : (
           categories.map((c) => (
-            <CategoryCard key={c.id} category={c} isDeleting={!!opLoading[`delete-${c.id}`]} onDelete={handleDelete} />
+            <CategoryCard
+              key={c.id}
+              category={c}
+              isActive={activeCategoryId === c.id}
+              isDeleting={!!opLoading[`delete-${c.id}`]}
+              onDelete={handleDelete}
+              onSelect={handleSelectCategory}
+            />
           ))
         )}
       </div>

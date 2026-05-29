@@ -1,5 +1,3 @@
-// ProductForm handles the visual overlay and inputs for adding/editing a product (Rule #2).
-
 import React, { useState, useEffect } from 'react';
 import { Product, Category, CreateProductInput } from '../../../../shared/types';
 import './ProductForm.css';

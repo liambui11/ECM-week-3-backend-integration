@@ -71,3 +71,14 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.category-card.active {
+  background: rgba(79, 70, 229, 0.08);
+  border-color: var(--color-primary);
+  border-width: 1px;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+}
+
+.category-card.active .cat-name {
+  color: var(--color-primary);
+}

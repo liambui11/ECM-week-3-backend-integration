@@ -1,6 +1,4 @@
-// ProductFilterBar manages query parameters for filtering and sorting (Rule #2).
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Category, ProductQueryParams } from '../../../../shared/types';
 import { SORT_OPTIONS } from '../../../../shared/constants';
 import './ProductFilterBar.css';
@@ -17,6 +15,12 @@ export const ProductFilterBar: React.FC<ProductFilterBarProps> = ({
   const [search, setSearch] = useState<string>(queryParams.search || '');
   const [minPrice, setMinPrice] = useState<string>(queryParams.minPrice?.toString() || '');
   const [maxPrice, setMaxPrice] = useState<string>(queryParams.maxPrice?.toString() || '');
+
+  useEffect(() => {
+    setSearch(queryParams.search || '');
+    setMinPrice(queryParams.minPrice?.toString() || '');
+    setMaxPrice(queryParams.maxPrice?.toString() || '');
+  }, [queryParams.search, queryParams.minPrice, queryParams.maxPrice]);
 
   const handleApply = (e: React.FormEvent) => {
     e.preventDefault();

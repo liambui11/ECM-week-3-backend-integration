@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 120px);
+  min-height: 100vh;
   padding: 20px;
   animation: fadeIn 0.5s ease-out;
 }
@@ -27,6 +27,17 @@
 .login-header {
   text-align: center;
   margin-bottom: 32px;
+}
+
+.brand-logo-title {
+  font-family: var(--font-title);
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
 }
 
 .login-title {
@@ -167,4 +178,31 @@
   border-radius: 4px;
   font-family: monospace;
   color: var(--color-accent);
+}
+
+.login-toggle-container {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--border-glass);
+  text-align: center;
+}
+
+.login-toggle-btn {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.login-toggle-btn:hover:not(:disabled) {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.login-toggle-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

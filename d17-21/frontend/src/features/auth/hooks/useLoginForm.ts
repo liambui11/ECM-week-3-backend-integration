@@ -1,6 +1,10 @@
-import { useState, FormEvent } from 'react';
-import { IAuthService } from '../services/AuthService';
+import { useState, FormEvent, useCallback } from 'react';
 import { User } from '../types';
+
+export interface IAuthService {
+  login: (email: string, password: string) => Promise<{ user: User }>;
+  register: (email: string, password: string) => Promise<void>;
+}
 
 interface UseLoginFormProps {
   authService: IAuthService;
@@ -8,9 +12,15 @@ interface UseLoginFormProps {
   onToast: (msg: string, type: 'success' | 'error') => void;
 }
 
-export const useLoginForm = ({ authService, onSuccess, onToast }: UseLoginFormProps) => {
+export const useLoginForm = ({
+  authService,
+  onSuccess,
+  onToast,
+}: UseLoginFormProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isRegister, setIsRegister] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,11 +35,15 @@ export const useLoginForm = ({ authService, onSuccess, onToast }: UseLoginFormPr
       setError(`Password must be at least ${MIN_PASSWORD_LEN} characters.`);
       return false;
     }
+    if (isRegister && password !== confirmPassword) {
+      setError('Passwords do not match.');
+      return false;
+    }
     setError(null);
     return true;
   };
 
-  const handleLogin = async (e: FormEvent) => {
+  const handleAuth = async (e: FormEvent) => {
     e.preventDefault();
     if (!validateInputs()) return;
 
@@ -37,11 +51,17 @@ export const useLoginForm = ({ authService, onSuccess, onToast }: UseLoginFormPr
     setError(null);
 
     try {
+      if (isRegister) {
+        await authService.register(email, password);
+        onToast('Registration successful! Logging in...', 'success');
+      }
       const response = await authService.login(email, password);
-      onToast('Login successful!', 'success');
+      if (!isRegister) {
+        onToast('Login successful!', 'success');
+      }
       onSuccess(response.user);
     } catch (err) {
-      const errMsg = err instanceof Error ? err.message : 'Login failed';
+      const errMsg = err instanceof Error ? err.message : 'Operation failed';
       setError(errMsg);
       onToast(errMsg, 'error');
     } finally {
@@ -49,13 +69,26 @@ export const useLoginForm = ({ authService, onSuccess, onToast }: UseLoginFormPr
     }
   };
 
+  const toggleMode = useCallback(() => {
+    setIsRegister((prev) => !prev);
+    setError(null);
+    setPassword('');
+    setConfirmPassword('');
+  }, []);
+
   return {
     email,
     setEmail,
     password,
     setPassword,
+    confirmPassword,
+    setConfirmPassword,
+    isRegister,
+    toggleMode,
     loading,
     error,
-    handleLogin,
+    handleAuth,
   };
 };
+
+export default useLoginForm;

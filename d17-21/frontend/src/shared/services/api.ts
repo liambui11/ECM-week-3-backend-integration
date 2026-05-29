@@ -1,91 +1,48 @@
-// Centralized API client using fetch to communicate with the Express backend (Rule #2).
-
+import axios, { AxiosResponse } from 'axios';
 import { API_CONFIG } from '../constants';
-import {
-  Category,
-  Product,
-  Pagination,
-  CreateProductInput,
-  UpdateProductInput,
-  CreateCategoryInput,
-  UpdateCategoryInput,
-  ProductQueryParams,
-} from '../types';
 
-async function request<T>(path: string, options?: RequestInit): Promise<T> {
-  const url = `${API_CONFIG.BASE_URL}${path}`;
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...options?.headers,
-    },
-  });
-  
-  const json = await response.json();
-  if (!response.ok) {
-    throw new Error(json.message || `Request failed with code ${response.status}`);
+const IDEMPOTENCY_HEADER = 'x-idempotency-key';
+const MUTATING_METHODS = ['POST', 'PUT', 'PATCH', 'DELETE'];
+
+const generateUUID = (): string => {
+  if (typeof self !== 'undefined' && self.crypto && self.crypto.randomUUID) {
+    return self.crypto.randomUUID();
   }
-  return json.data as T;
-}
-
-export const api = {
-  getCategories: (): Promise<Category[]> => {
-    return request<Category[]>('/categories');
-  },
-  
-  createCategory: (input: CreateCategoryInput): Promise<Category> => {
-    return request<Category>('/categories', {
-      method: 'POST',
-      body: JSON.stringify(input),
-    });
-  },
-  
-  updateCategory: (id: number, input: UpdateCategoryInput): Promise<Category> => {
-    return request<Category>(`/categories/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(input),
-    });
-  },
-  
-  deleteCategory: (id: number): Promise<void> => {
-    return request<void>(`/categories/${id}`, {
-      method: 'DELETE',
-    });
-  },
-
-  getProducts: (q: ProductQueryParams): Promise<{ products: Product[]; pagination: Pagination }> => {
-    const params = new URLSearchParams();
-    Object.entries(q).forEach(([key, val]) => {
-      if (val !== undefined && val !== null) {
-        params.append(key, String(val));
-      }
-    });
-    return request<{ products: Product[]; pagination: Pagination }>(`/products?${params.toString()}`);
-  },
-
-  getProduct: (id: number): Promise<Product> => {
-    return request<Product>(`/products/${id}`);
-  },
-
-  createProduct: (input: CreateProductInput): Promise<Product> => {
-    return request<Product>('/products', {
-      method: 'POST',
-      body: JSON.stringify(input),
-    });
-  },
-
-  updateProduct: (id: number, input: UpdateProductInput): Promise<Product> => {
-    return request<Product>(`/products/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(input),
-    });
-  },
-
-  deleteProduct: (id: number): Promise<void> => {
-    return request<void>(`/products/${id}`, {
-      method: 'DELETE',
-    });
-  },
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
 };
-export default api;
+
+export const apiClient = axios.create({
+  baseURL: API_CONFIG.BASE_URL,
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+apiClient.interceptors.request.use((config) => {
+  const method = config.method?.toUpperCase();
+  if (method && MUTATING_METHODS.includes(method)) {
+    if (config.headers && !config.headers[IDEMPOTENCY_HEADER]) {
+      config.headers[IDEMPOTENCY_HEADER] = generateUUID();
+    }
+  }
+  return config;
+});
+
+apiClient.interceptors.response.use(
+  (response: AxiosResponse) => {
+    return response.data.data ?? response.data;
+  },
+  (error) => {
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      'The system has malfunctioned.';
+    return Promise.reject(new Error(message));
+  }
+);
+

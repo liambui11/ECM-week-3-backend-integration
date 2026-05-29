@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Category } from '../../../shared/types';
-import { api } from '../../../shared/services/api';
 import { UI_CONSTANTS } from '../../../shared/constants';
 import { useOffline } from '../../../shared/hooks/useOffline';
+import { categoryApi } from '../services/categoryApi';
 
 export const useCategories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -15,7 +15,7 @@ export const useCategories = () => {
     setLoading(true);
     setError(null);
     try {
-      const list = await api.getCategories();
+      const list = await categoryApi.getMany();
       setCategories(list);
     } catch (err) {
       setError(err instanceof Error ? err.message : UI_CONSTANTS.GENERIC_ERROR);
@@ -28,7 +28,7 @@ export const useCategories = () => {
     if (isOffline) throw new Error(UI_CONSTANTS.OFFLINE_ERROR);
     setOpLoading((prev) => ({ ...prev, create: true }));
     try {
-      const fresh = await api.createCategory({ name, description });
+      const fresh = await categoryApi.create({ name, description });
       setCategories((prev) => [...prev, fresh]);
       return fresh;
     } finally {
@@ -40,7 +40,7 @@ export const useCategories = () => {
     if (isOffline) throw new Error(UI_CONSTANTS.OFFLINE_ERROR);
     setOpLoading((prev) => ({ ...prev, [`delete-${id}`]: true }));
     try {
-      await api.deleteCategory(id);
+      await categoryApi.delete(id);
       setCategories((prev) => prev.filter((c) => c.id !== id));
     } finally {
       setOpLoading((prev) => ({ ...prev, [`delete-${id}`]: false }));
